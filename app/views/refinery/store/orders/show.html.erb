@@ -1,0 +1,57 @@
+<% content_for :body_content_title do %>
+  <%= @order.order_number %>
+<% end %>
+
+<% content_for :body do %>
+  <section>
+    <h1>Order Number</h1>
+    <p>
+      <%=raw @order.order_number %>
+    </p>
+  </section>
+  <section>
+    <h1>Reference</h1>
+    <p>
+      <%=raw @order.reference %>
+    </p>
+  </section>
+  <section>
+    <h1>Quantity</h1>
+    <p>
+      <%=raw @order.quantity %>
+    </p>
+  </section>
+  <section>
+    <h1>Unit</h1>
+    <p>
+      <%=raw @order.unit %>
+    </p>
+  </section>
+  <section>
+    <h1>User</h1>
+    <p>
+      <%=raw @order.user_id %>
+    </p>
+  </section>
+  <section>
+    <h1>Status</h1>
+    <p>
+      <%=raw @order.status %>
+    </p>
+  </section>
+<% end %>
+
+<% content_for :side_body do %>
+  <aside>
+    <h2><%= t('.other') %></h2>
+    <ul id="orders">
+      <% @orders.each do |order| %>
+        <li>
+          <%= link_to order.order_number, refinery.store_order_path(order) %>
+        </li>
+      <% end %>
+    </ul>
+  </aside>
+<% end %>
+
+<%= render '/refinery/content_page' %>
