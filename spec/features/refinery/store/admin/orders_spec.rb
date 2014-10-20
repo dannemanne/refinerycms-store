@@ -21,7 +21,9 @@ describe Refinery do
         end
 
         describe "create" do
+          let(:retailer) { FactoryGirl.create(:retailer) }
           before do
+            retailer
             visit refinery.store_admin_orders_path
 
             click_link "Add New Order"
@@ -29,6 +31,7 @@ describe Refinery do
 
           context "valid data" do
             it "should succeed" do
+              select retailer.name, :from => "Retailer"
               fill_in "Order Number", :with => "This is a test of the first string field"
               click_button "Save"
 
@@ -47,13 +50,14 @@ describe Refinery do
           end
 
           context "duplicate" do
-            before { FactoryGirl.create(:order, :order_number => "UniqueTitle") }
+            before { FactoryGirl.create(:order, :order_number => "UniqueTitle", retailer: retailer) }
 
             it "should fail" do
               visit refinery.store_admin_orders_path
 
               click_link "Add New Order"
 
+              select retailer.name, :from => "Retailer"
               fill_in "Order Number", :with => "UniqueTitle"
               click_button "Save"
 

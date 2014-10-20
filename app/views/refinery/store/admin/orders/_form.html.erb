@@ -4,6 +4,11 @@
               :include_object_name => true %>
 
   <div class='field'>
+    <%= f.label :retailer_id -%>
+    <%= f.collection_select :retailer_id, ::Refinery::Store::Retailer.not_expired, :id, :name -%>
+  </div>
+
+  <div class='field'>
     <%= f.label :order_number -%>
     <%= f.text_field :order_number, :class => 'larger widest' -%>
   </div>
@@ -11,16 +16,6 @@
   <div class='field'>
     <%= f.label :reference -%>
     <%= f.text_field :reference -%>
-  </div>
-
-  <div class='field'>
-    <%= f.label :quantity -%>
-    <%= f.text_field :quantity -%>
-  </div>
-
-  <div class='field'>
-    <%= f.label :unit -%>
-    <%= f.text_field :unit -%>
   </div>
 
   <div class='field'>
