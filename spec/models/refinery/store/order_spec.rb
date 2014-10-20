@@ -5,13 +5,6 @@ module Refinery
     describe Order do
       describe "validations" do
         let(:order) { FactoryGirl.build(:order) }
-
-        it 'validates order_number presence' do
-          expect(order).to be_valid
-
-          order.order_number = ''
-          expect(order).not_to be_valid
-        end
         it 'validates retailer presence' do
           expect(order).to be_valid
 

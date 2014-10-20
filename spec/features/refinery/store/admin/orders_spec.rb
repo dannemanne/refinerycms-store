@@ -40,15 +40,6 @@ describe Refinery do
             end
           end
 
-          context "invalid data" do
-            it "should fail" do
-              click_button "Save"
-
-              page.should have_content("Order Number can't be blank")
-              Refinery::Store::Order.count.should == 0
-            end
-          end
-
           context "duplicate" do
             before { FactoryGirl.create(:order, :order_number => "UniqueTitle", retailer: retailer) }
 

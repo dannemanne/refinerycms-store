@@ -5,6 +5,12 @@ en:
         title: Store
     store:
       admin:
+        shared:
+          links:
+            manage_orders: Manage Orders
+            manage_order_items: Manage Order Items
+            manage_retailers: Manage Retailers
+            manage_products: Manage Products
         orders:
           actions:
             create_new: Add New Order
@@ -44,6 +50,7 @@ en:
             view_live_html: View this product live <br/><em>(opens in a new window)</em>
             edit: Edit this product
             delete: Remove this product forever
+            preview: '(%{name}) added %{created_at}'
         order_items:
           actions:
             create_new: Add New Order Item

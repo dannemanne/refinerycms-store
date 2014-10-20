@@ -15,7 +15,7 @@ describe Refinery do
         end
 
         it "only shows product that are not expired" do
-          visit refinery.store_store_path
+          visit refinery.store_root_path
           page.should have_content("UniqueTitleOne")
           page.should have_content("UniqueTitleTwo")
           page.should_not have_content("UniqueTitleThree")
@@ -23,7 +23,7 @@ describe Refinery do
         end
 
         it "only shows non-expired, featured products when scope is featured" do
-          visit refinery.store_store_path(scope: 'featured')
+          visit refinery.store_root_path(scope: 'featured')
           page.should_not have_content("UniqueTitleOne")
           page.should_not have_content("UniqueTitleTwo")
           page.should_not have_content("UniqueTitleThree")
@@ -31,11 +31,28 @@ describe Refinery do
         end
 
         it "only shows non-expired products from a specific retailer" do
-          visit refinery.store_store_path(retailer_id: retailer.id)
+          visit refinery.store_root_path(retailer_id: retailer.id)
           page.should have_content("UniqueTitleOne")
           page.should_not have_content("UniqueTitleTwo")
           page.should_not have_content("UniqueTitleThree")
           page.should have_content("UniqueTitleFour")
+        end
+
+        describe "Add to Cart" do
+          it "does not show 'Add to Cart' or 'Remove from Cart' links when no user is signed in" do
+            visit refinery.store_root_path
+            page.should_not have_content('Add to Cart')
+            page.should_not have_content('Remove from Cart')
+          end
+
+          describe 'As logged in user' do
+            refinery_login_with :refinery_user
+
+            it "does show 'Add to Cart' links when user is signed in" do
+              visit refinery.store_root_path
+              page.should have_content('Add to Cart')
+            end
+          end
         end
       end
 

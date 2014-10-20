@@ -1,7 +1,7 @@
 class CreateStoreOrders < ActiveRecord::Migration
 
   def up
-    create_table :refinery_orders do |t|
+    create_table :refinery_store_orders do |t|
       t.integer :retailer_id
       t.string :order_number
       t.string :reference
@@ -14,12 +14,21 @@ class CreateStoreOrders < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :refinery_orders, :retailer_id
-    add_index :refinery_orders, :order_number
+    add_index :refinery_store_orders, :retailer_id
+    add_index :refinery_store_orders, :order_number
+    add_index :refinery_store_orders, :user_id
+    add_index :refinery_store_orders, :status
+    add_index :refinery_store_orders, :position
 
   end
 
   def down
+    remove_index :refinery_store_orders, :retailer_id
+    remove_index :refinery_store_orders, :order_number
+    remove_index :refinery_store_orders, :user_id
+    remove_index :refinery_store_orders, :status
+    remove_index :refinery_store_orders, :position
+
     if defined?(::Refinery::UserPlugin)
       ::Refinery::UserPlugin.destroy_all({:name => "refinerycms-store"})
     end
@@ -29,10 +38,14 @@ class CreateStoreOrders < ActiveRecord::Migration
     end
 
     if defined?(::Refinery::Page)
+      ::Refinery::Page.delete_all({:link_url => "/store/cart"})
+    end
+
+    if defined?(::Refinery::Page)
       ::Refinery::Page.delete_all({:link_url => "/store"})
     end
 
-    drop_table :refinery_orders
+    drop_table :refinery_store_orders
 
   end
 

@@ -1,8 +1,10 @@
-<% content_for :body_content_title do %>
-  <%= @order.order_number %>
-<% end %>
-
 <% content_for :body do %>
+  <section>
+    <h1>Retailer</h1>
+    <p>
+      <%=raw @order.retailer.name %>
+    </p>
+  </section>
   <section>
     <h1>Order Number</h1>
     <p>
@@ -16,25 +18,30 @@
     </p>
   </section>
   <section>
-    <h1>Quantity</h1>
-    <p>
-      <%=raw @order.quantity %>
-    </p>
-  </section>
-  <section>
-    <h1>Unit</h1>
-    <p>
-      <%=raw @order.unit %>
-    </p>
-  </section>
-  <section>
     <h1>User</h1>
     <p>
-      <%=raw @order.user_id %>
+      <%=raw @order.user.username %>
     </p>
   </section>
   <section>
     <h1>Status</h1>
+    <p>
+      <%=raw @order.status %>
+    </p>
+  </section>
+  <section>
+    <h1>Order Items</h1>
+    <% if @order.order_items.any? %>
+      <% @order.order_items.each do |order_item| %>
+        <% if order_item.product.present? %>
+          <p><%= link_to order_item.product.product_number, refinery.store_product_path(order_item.product) %>, <%= order_item.product.name %>, <%= order_item.product.description %></p>
+        <% else %>
+          <p><%= order_item.product_number %>, <%= order_item.comment %></p>
+        <% end %>
+      <% end %>
+    <% else %>
+      <p class="italic">No Order Items added</p>
+    <% end %>
     <p>
       <%=raw @order.status %>
     </p>

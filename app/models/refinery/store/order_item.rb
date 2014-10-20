@@ -1,7 +1,7 @@
 module Refinery
   module Store
     class OrderItem < Refinery::Core::BaseModel
-      self.table_name = 'refinery_order_items'
+      self.table_name = 'refinery_store_order_items'
 
       belongs_to :order
       belongs_to :product
@@ -17,7 +17,7 @@ module Refinery
       before_validation do
         if product.present?
           self.product_number = product.product_number
-          self.price_per_unit = product.price_amount
+          self.price_per_item = product.price_amount
         end
       end
 

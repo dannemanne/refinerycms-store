@@ -35,7 +35,7 @@ module Refinery
 
       rescue ActiveRecord::RecordNotFound
         flash[:alert] = 'Not a valid Retailer'
-        redirect_to refinery.store_store_path
+        redirect_to refinery.store_root_path
       end
 
       def find_page

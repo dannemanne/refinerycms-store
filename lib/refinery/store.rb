@@ -5,6 +5,7 @@ module Refinery
 
   module Store
     require 'refinery/store/engine'
+    require 'refinery/store/user_addon'
 
     class << self
       attr_writer :root

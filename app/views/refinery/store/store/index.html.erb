@@ -1,8 +1,8 @@
 <% content_for :body do %>
   <div class="store-scope">
-    <%= link_to t('.featured'), refinery.store_store_path(*{ scope: 'featured', retailer_id: params[:retailer_id] }.reject { |_, v| v.nil? }) %>
-    <%= link_to t('.most_popular'), refinery.store_store_path(*{ scope: 'most_popular', retailer_id: params[:retailer_id] }.reject { |_, v| v.nil? }) %>
-    <%= link_to t('.recent'), refinery.store_store_path(*{ scope: 'recent', retailer_id: params[:retailer_id] }.reject { |_, v| v.nil? }) %>
+    <%= link_to t('.featured'), refinery.store_root_path({ scope: 'featured', retailer_id: params[:retailer_id] }.reject { |_, v| v.nil? }) %>
+    <%= link_to t('.most_popular'), refinery.store_root_path({ scope: 'most_popular', retailer_id: params[:retailer_id] }.reject { |_, v| v.nil? }) %>
+    <%= link_to t('.recent'), refinery.store_root_path({ scope: 'recent', retailer_id: params[:retailer_id] }.reject { |_, v| v.nil? }) %>
   </div>
 
   <table>
@@ -10,6 +10,7 @@
       <th>Product No.</th>
       <th>Name</th>
       <th>Price</th>
+      <th>Action</th>
     </tr>
     <% if @products.any? %>
       <% @products.each do |product| %>
@@ -17,6 +18,11 @@
           <td><%= link_to product.product_number, refinery.store_product_path(product) %></td>
           <td><%= product.name %></td>
           <td><%= product.price %></td>
+          <td>
+            <% if signed_in? %>
+              <%= render 'refinery/store/shared/cart_button', product: product %>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     <% else %>
@@ -28,13 +34,31 @@
 <% end %>
 
 <% content_for :side_body do %>
-  <h4>Retailers</h4>
+  <% if signed_in? %>
+    <p>
+      <%= link_to refinery.store_cart_path do%>
+        <i class="fi-shopping-cart"></i>
+        My Cart
+        (<span class="cart-count"><%= current_refinery_user.cart_count %></span>)
+      <%end%>
+    </p>
+  <% end %>
+
+  <h4>Show Products from</h4>
   <ul class="store-retailer-list">
-    <li><%= link_to t('.all_retailers'), refinery.store_store_path(*{ scope: params[:scope] }.reject { |_, v| v.nil? }) %></li>
+    <li><%= link_to t('.all_retailers'), refinery.store_root_path({ scope: params[:scope] }.reject { |_, v| v.nil? }) %></li>
     <% @retailers.each do |retailer| %>
-      <li><%= link_to retailer.name, refinery.store_store_path(*{ retailer_id: retailer.id, scope: params[:scope] }.reject { |_, v| v.nil? }) %></li>
+      <li><%= link_to retailer.name, refinery.store_root_path({ retailer_id: retailer.id, scope: params[:scope] }.reject { |_, v| v.nil? }) %></li>
     <% end %>
   </ul>
+<% end %>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag 'refinery/store' %>
+<% end %>
+
+<% content_for :javascripts do %>
+  <%= javascript_include_tag 'refinery/store' %>
 <% end %>
 
 <%= render '/refinery/content_page' %>

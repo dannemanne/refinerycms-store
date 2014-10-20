@@ -8,6 +8,7 @@
     <%= link_to t('.create_new'), refinery.new_store_admin_retailer_path,
                  :class => "add_icon" %>
   </li>
+  <%= render '/refinery/store/admin/shared/links' %>
 <% if !searching? && ::Refinery::Store::Admin::RetailersController.sortable? && ::Refinery::Store::Retailer.many? %>
   <li>
     <%= link_to t('.reorder', :what => "Retailers"),

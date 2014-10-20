@@ -1,7 +1,7 @@
 module Refinery
   module Store
     class Retailer < Refinery::Core::BaseModel
-      self.table_name = 'refinery_retailers'
+      self.table_name = 'refinery_store_retailers'
 
       has_many :products, dependent: :destroy
       has_many :orders, dependent: :destroy

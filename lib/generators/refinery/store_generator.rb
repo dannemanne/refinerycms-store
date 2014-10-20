@@ -15,5 +15,17 @@ Refinery::Store::Engine.load_seed
         EOH
       end
     end
+
+    def create_redis_initializer
+      create_file 'config/initializers/refinery/redis.rb' unless File.exists?(File.join(destination_root, 'config', 'initializers', 'refinery', 'redis.rb'))
+      append_file 'config/initializers/refinery/redis.rb', :verbose => true do
+        <<-EOH
+require 'redis'
+
+# Added by Refinery CMS Store extension
+$redis = Redis.new(:driver => :hiredis)
+        EOH
+      end
+    end
   end
 end

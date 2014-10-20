@@ -1,9 +1,10 @@
 module Refinery
   module Store
     class Product < Refinery::Core::BaseModel
-      self.table_name = 'refinery_products'
+      self.table_name = 'refinery_store_products'
 
       belongs_to :retailer
+      belongs_to :image,    class_name: '::Refinery::Image'
 
       attr_accessible :product_number, :name, :description, :measurement_unit, :price_amount, :image_id, :position, :retailer_id
 
@@ -19,6 +20,16 @@ module Refinery
 
       def price
         "#{price_amount} #{price_unit}"
+      end
+
+      def cart_action(current_user_id)
+        @cart_action ||= {}
+        @cart_action[current_user_id] ||=
+            if $redis.sismember "cart#{current_user_id}", id
+              'Remove from'
+            else
+              'Add to'
+            end
       end
 
       class << self

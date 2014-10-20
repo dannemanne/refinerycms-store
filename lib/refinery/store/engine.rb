@@ -1,3 +1,5 @@
+require 'redis'
+
 module Refinery
   module Store
     class Engine < Rails::Engine
@@ -5,6 +7,13 @@ module Refinery
       isolate_namespace Refinery::Store
 
       engine_name :refinery_store
+
+      after_inclusion do
+        Refinery.include_once(::Refinery::User, Refinery::Store::UserAddon)
+
+        # Global variable to access Redis driver
+        $redis = Redis.new(:driver => :hiredis)
+      end
 
       before_inclusion do
         Refinery::Plugin.register do |plugin|

@@ -1,7 +1,7 @@
 class CreateStoreOrderItems < ActiveRecord::Migration
 
   def change
-    create_table :refinery_order_items do |t|
+    create_table :refinery_store_order_items do |t|
       t.integer :order_id
       t.integer :product_id
       t.string :product_number
@@ -15,8 +15,10 @@ class CreateStoreOrderItems < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :refinery_order_items, :order_id
-    add_index :refinery_order_items, :product_id
+    add_index :refinery_store_order_items, :order_id
+    add_index :refinery_store_order_items, :product_id
+    add_index :refinery_store_order_items, :product_number
+    add_index :refinery_store_order_items, :position
   end
 
 end

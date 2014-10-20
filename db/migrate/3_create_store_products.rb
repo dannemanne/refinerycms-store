@@ -1,7 +1,7 @@
 class CreateStoreProducts < ActiveRecord::Migration
 
   def change
-    create_table :refinery_products do |t|
+    create_table :refinery_store_products do |t|
       t.integer :retailer_id
       t.string :product_number
       t.string :name
@@ -18,12 +18,12 @@ class CreateStoreProducts < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :refinery_products, :retailer_id
-    add_index :refinery_products, :product_number
-    add_index :refinery_products, :image_id
-    add_index :refinery_products, :position
-    add_index :refinery_products, :featured_at
-    add_index :refinery_products, :expired_at
+    add_index :refinery_store_products, :retailer_id
+    add_index :refinery_store_products, :product_number
+    add_index :refinery_store_products, :image_id
+    add_index :refinery_store_products, :position
+    add_index :refinery_store_products, :featured_at
+    add_index :refinery_store_products, :expired_at
   end
 
 end

@@ -1,7 +1,9 @@
 <li class='clearfix record <%= cycle("on", "on-hover") %>' id="<%= dom_id(product) -%>">
   <span class='title'>
     <%= product.product_number %>
-
+    <span class="preview">
+      <%= t('.preview', name: product.name, created_at: product.created_at) %>
+    </span>
   </span>
   <span class='actions'>
     
