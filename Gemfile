@@ -36,5 +36,3 @@ group :assets do
   gem 'coffee-rails'
   gem 'uglifier'
 end
-
-gem 'pry'
