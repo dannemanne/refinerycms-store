@@ -12,7 +12,12 @@ module Refinery
         Refinery.include_once(::Refinery::User, Refinery::Store::UserAddon)
 
         # Global variable to access Redis driver
-        $redis = Redis.new(:driver => :hiredis)
+        if ENV["REDISTOGO_URL"].present?
+          uri = URI.parse(ENV["REDISTOGO_URL"])
+          $redis = Redis.new(:driver => :hiredis, :host => uri.host, :port => uri.port, :password => uri.password)
+        else
+          $redis = Redis.new(:driver => :hiredis)
+        end
       end
 
       before_inclusion do
