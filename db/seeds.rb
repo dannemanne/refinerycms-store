@@ -57,6 +57,7 @@ Refinery::I18n.frontend_locales.each do |lang|
         :parent_id => Refinery::Page.where(:link_url => '/store').first.try(:id),
         :title => 'Products',
         :link_url => url,
+        :show_in_menu => false,
         :deletable => false,
         :menu_match => "^#{url}(\/|\/.+?|)$"
     )

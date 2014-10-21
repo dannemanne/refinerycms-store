@@ -1,36 +1,13 @@
 <% content_for :body do %>
-  <div class="store-scope">
-    <%= link_to t('.featured'), refinery.store_root_path({ scope: 'featured', retailer_id: params[:retailer_id] }.reject { |_, v| v.nil? }) %>
-    <%= link_to t('.most_popular'), refinery.store_root_path({ scope: 'most_popular', retailer_id: params[:retailer_id] }.reject { |_, v| v.nil? }) %>
-    <%= link_to t('.recent'), refinery.store_root_path({ scope: 'recent', retailer_id: params[:retailer_id] }.reject { |_, v| v.nil? }) %>
-  </div>
+  <ul class="store-top-menu">
+    <li><%= link_to t('.all'), refinery.store_root_path({ retailer_id: params[:retailer_id] }.reject { |_, v| v.nil? }), class: params[:scope].blank? ? 'active-scope' : '' %></li>
+    <li><%= link_to t('.featured'), refinery.store_root_path({ scope: 'featured', retailer_id: params[:retailer_id] }.reject { |_, v| v.nil? }), class: params[:scope] == 'featured' ? 'active-scope' : '' %></li>
+    <li><%= link_to t('.most_popular'), refinery.store_root_path({ scope: 'most_popular', retailer_id: params[:retailer_id] }.reject { |_, v| v.nil? }), class: params[:scope] == 'most_popular' ? 'active-scope' : '' %></li>
+    <li><%= link_to t('.recent'), refinery.store_root_path({ scope: 'recent', retailer_id: params[:retailer_id] }.reject { |_, v| v.nil? }), class: params[:scope] == 'recent' ? 'active-scope' : '' %></li>
+  </ul>
 
-  <table>
-    <tr>
-      <th>Product No.</th>
-      <th>Name</th>
-      <th>Price</th>
-      <th>Action</th>
-    </tr>
-    <% if @products.any? %>
-      <% @products.each do |product| %>
-        <tr>
-          <td><%= link_to product.product_number, refinery.store_product_path(product) %></td>
-          <td><%= product.name %></td>
-          <td><%= product.price %></td>
-          <td>
-            <% if signed_in? %>
-              <%= render 'refinery/store/shared/cart_button', product: product %>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-    <% else %>
-      <tr>
-        <td colspan="3" class="italic">No products added yet</td>
-      </tr>
-    <% end %>
-  </table>
+  <%= render 'store_products', products: @products %>
+
 <% end %>
 
 <% content_for :side_body do %>
@@ -47,6 +24,8 @@
   <h4>Show Products from</h4>
   <ul class="store-retailer-list">
     <li><%= link_to t('.all_retailers'), refinery.store_root_path({ scope: params[:scope] }.reject { |_, v| v.nil? }) %></li>
+  </ul>
+  <ul class="store-retailer-list">
     <% @retailers.each do |retailer| %>
       <li><%= link_to retailer.name, refinery.store_root_path({ retailer_id: retailer.id, scope: params[:scope] }.reject { |_, v| v.nil? }) %></li>
     <% end %>

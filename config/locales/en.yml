@@ -79,6 +79,7 @@ en:
           featured: Featued
           most_popular: Most Popular
           recent: Recent
+          all: All
   activerecord:
     attributes:
       'refinery/store/order':
