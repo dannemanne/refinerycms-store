@@ -1,51 +1,53 @@
 <% content_for :body do %>
-  <section>
-    <h1>Retailer</h1>
-    <p>
-      <%=raw @order.retailer.name %>
-    </p>
-  </section>
-  <section>
-    <h1>Order Number</h1>
-    <p>
-      <%=raw @order.order_number %>
-    </p>
-  </section>
-  <section>
-    <h1>Reference</h1>
-    <p>
-      <%=raw @order.reference %>
-    </p>
-  </section>
-  <section>
-    <h1>User</h1>
-    <p>
-      <%=raw @order.user.username %>
-    </p>
-  </section>
-  <section>
-    <h1>Status</h1>
-    <p>
-      <%=raw @order.status %>
-    </p>
-  </section>
-  <section>
-    <h1>Order Items</h1>
-    <% if @order.order_items.any? %>
-      <% @order.order_items.each do |order_item| %>
-        <% if order_item.product.present? %>
-          <p><%= link_to order_item.product.product_number, refinery.store_product_path(order_item.product) %>, <%= order_item.product.name %>, <%= order_item.product.description %></p>
-        <% else %>
-          <p><%= order_item.product_number %>, <%= order_item.comment %></p>
-        <% end %>
-      <% end %>
-    <% else %>
-      <p class="italic">No Order Items added</p>
+  <h2><%=raw @order.order_number %> <small><%=raw @order.retailer.name %></small></h2>
+
+  <% if @order.reference.present? %>
+    <p><%= @order.reference %></p>
+  <% end %>
+
+  <p>
+    Ordered by:
+    <%=raw @order.user.username %>
+  </p>
+
+  <p>
+    Total Cost:
+    <%= number_to_currency @order.total_price, unit: @order.price_unit, format: '%n %u' %>
+  </p>
+
+  <table>
+    <thead>
+    <tr>
+      <th>Product No.</th>
+      <th>Description</th>
+      <th>Quantity</th>
+      <th>Sub Total</th>
+    </tr>
+    </thead>
+    <body>
+    <% @order.order_items.each do |order_item| %>
+      <tr>
+        <td>
+          <% if order_item.product.present? %>
+            <%= link_to order_item.product.product_number, refinery.store_product_path(order_item.product) %>
+          <% else %>
+            <%= order_item.product_number %>
+          <% end %>
+        </td>
+        <td>
+          <% if order_item.product.present? %>
+            <%=raw order_item.product.name %>
+          <% else %>
+            <%= order_item.comment %>
+          <% end %>
+        </td>
+        <td><%= order_item.quantity %> <%= order_item.product.try(:measurement_unit) %></td>
+        <td><%= number_to_currency order_item.sub_total_price, unit: @order.price_unit, format: '%n %u' %></td>
+      </tr>
     <% end %>
-    <p>
-      <%=raw @order.status %>
-    </p>
-  </section>
+    </body>
+  </table>
+
 <% end %>
 
 <% content_for :side_body do %>

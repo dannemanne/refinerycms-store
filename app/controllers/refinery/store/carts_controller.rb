@@ -53,9 +53,14 @@ module Refinery
             products.each do |product|
               order.order_items.create!(product_id: product.id, quantity: 1)
             end
+
+            order.total_price = order.order_items.sum(&:sub_total_price)
+            order.save!
           end
 
-          $redis.srem current_user_cart, *cart_ids
+          cart_ids.each do |cid|
+            $redis.srem current_user_cart, cid
+          end
 
           true
         end

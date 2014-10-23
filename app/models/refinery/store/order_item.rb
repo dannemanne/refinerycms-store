@@ -18,6 +18,7 @@ module Refinery
         if product.present?
           self.product_number = product.product_number
           self.price_per_item = product.price_amount
+          self.sub_total_price = price_per_item * quantity
         end
       end
 
